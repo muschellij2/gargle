@@ -8,21 +8,29 @@
 
 <title>OAuth2 token objects specific to Google APIs — Gargle-class • gargle</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,17 +38,27 @@
 
 
 
-<meta property="og:title" content="OAuth2 token objects specific to Google APIs — Gargle-class" />
 
-<meta property="og:description" content="This is based on the Token2.0 class provided in httr.
-These objects should be created through the constructor function
-gargle2.0_token(). In the base Token2.0 class, tokens are cached based on
-endpoint, app, and scopes. For the Gargle2.0 subclass, the identifier or
-key is expanded to include the email address associated with the token. This
-makes it easier to work with Google APIs with multiple identities. The
-default location for the token cache is also different: it's now
-&quot;~/.R/gargle/gargle-oauth&quot; instead of ./.httr-oauth." />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="OAuth2 token objects specific to Google APIs — Gargle-class" />
+<meta property="og:description" content="Gargle2.0 is based on the Token2.0 class provided in
+httr. The preferred way to create a Gargle2.0 token is through the
+constructor function gargle2.0_token(). Key differences with Token2.0:
+The key for a cached Token2.0 comes from hashing the endpoint, app, and
+scopes. For the Gargle2.0 subclass, the identifier or key is expanded to
+include the email address associated with the token. This makes it easier to
+work with Google APIs with multiple identities.
+Gargle2.0 tokens are cached, by default, below
+&quot;~/.R/gargle/gargle-oauth&quot;, i.e. at the user level. In contrast, the
+default location for Token2.0 is ./.httr-oauth, i.e. in current working
+directory. Gargle2.0 behaviour makes it easier to reuse tokens across
+projects and makes it less likely that tokens are accidentally synced to a
+remote location like GitHub or DropBox.
+Each Gargle2.0 token is cached in its own file. The token cache is a
+directory of such files. In contrast, Token2.0 tokens are cached as
+components of a list, which is typically serialized to ./.httr-oauth.
+
+" />
+
 
 
 
@@ -64,9 +82,10 @@ default location for the token cache is also different: it's now
   gtag('config', 'UA-115082821-1');
 </script>
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -80,7 +99,7 @@ default location for the token cache is also different: it's now
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gargle</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0.9000</span>
       </span>
     </div>
 
@@ -97,34 +116,48 @@ default location for the token cache is also different: it's now
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/articles/managing-tokens-securely.html">Managing tokens securely</a>
+      <a href="../articles/non-interactive-auth.html">Non-interactive auth</a>
     </li>
     <li>
-      <a href="../articles/gargle-auth-in-client-package.html">How to use gargle for auth in a client package</a>
+      <a href="../articles/troubleshooting.html">Troubleshooting gargle auth</a>
+    </li>
+    <li>
+      <a href="../articles/auth-from-web.html">Auth when using R in the browser</a>
     </li>
     <li>
       <a href="../articles/get-api-credentials.html">How to get your own API credentials</a>
     </li>
+    <li class="divider"></li>
     <li>
-      <a href="../articles/how-gargle-gets-tokens.html">How gargle gets tokens</a>
-    </li>
-    <li>
-      <a href="../articles/non-interactive-auth.html">Non-interactive auth</a>
-    </li>
-    <li>
-      <a href="../articles/request-helper-functions.html">Request helper functions</a>
+      <a href="../articles/index.html">More...</a>
     </li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">News</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Blog posts</li>
+    <li>
+      <a href="https://www.tidyverse.org/blog/2021/07/gargle-1-2-0/">gargle 1.2.0</a>
+    </li>
+    <li>
+      <a href="https://www.tidyverse.org/blog/2019/08/gargle-hello-world/">gargle's debut on CRAN</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="../news/index.html">Change log</a>
+    </li>
+  </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/gargle">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/r-lib/gargle/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -135,6 +168,7 @@ default location for the token cache is also different: it's now
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -146,35 +180,163 @@ default location for the token cache is also different: it's now
     </div>
 
     <div class="ref-description">
-    
-    <p>This is based on the <a href='https://www.rdocumentation.org/packages/httr/topics/Token-class'>Token2.0</a> class provided in httr.
-These objects should be created through the constructor function
-<code><a href='gargle2.0_token.html'>gargle2.0_token()</a></code>. In the base Token2.0 class, tokens are cached based on
-endpoint, app, and scopes. For the <code>Gargle2.0</code> subclass, the identifier or
-key is expanded to include the email address associated with the token. This
-makes it easier to work with Google APIs with multiple identities. The
-default location for the token cache is also different: it's now
-<code>"~/.R/gargle/gargle-oauth"</code> instead of <code>./.httr-oauth</code>.</p>
-    
+    <p><code>Gargle2.0</code> is based on the <code><a href='https://httr.r-lib.org/reference/Token-class.html'>Token2.0</a></code> class provided in
+httr. The preferred way to create a <code>Gargle2.0</code> token is through the
+constructor function <code><a href='gargle2.0_token.html'>gargle2.0_token()</a></code>. Key differences with <code>Token2.0</code>:</p><ul>
+<li><p>The key for a cached <code>Token2.0</code> comes from hashing the endpoint, app, and
+scopes. For the <code>Gargle2.0</code> subclass, the identifier or key is expanded to
+include the email address associated with the token. This makes it easier to
+work with Google APIs with multiple identities.</p></li>
+<li><p><code>Gargle2.0</code> tokens are cached, by default, below
+<code>"~/.R/gargle/gargle-oauth"</code>, i.e. at the user level. In contrast, the
+default location for <code>Token2.0</code> is <code>./.httr-oauth</code>, i.e. in current working
+directory. <code>Gargle2.0</code> behaviour makes it easier to reuse tokens across
+projects and makes it less likely that tokens are accidentally synced to a
+remote location like GitHub or DropBox.</p></li>
+<li><p>Each <code>Gargle2.0</code> token is cached in its own file. The token cache is a
+directory of such files. In contrast, <code>Token2.0</code> tokens are cached as
+components of a list, which is typically serialized to <code>./.httr-oauth</code>.</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='no'>Gargle2.0</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>An R6 class object.</p>
+
+    <h2 class="hasAnchor" id="super-classes"><a class="anchor" href="#super-classes"></a>Super classes</h2>
+
+    <p><code><a href='https://httr.r-lib.org/reference/Token-class.html'>httr::Token</a></code> -&gt; <code><a href='https://httr.r-lib.org/reference/Token-class.html'>httr::Token2.0</a></code> -&gt; <code>Gargle2.0</code></p>
+    <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
+
+    <p><div class="r6-fields"></p><dl>
+<dt><code>email</code></dt><dd><p>Email associated with the token.</p></dd>
+
+<dt><code>package</code></dt><dd><p>Name of the package requesting a token. Used in messages.</p></dd>
+
+</dl><p></div></p>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
     
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
+
+<ul>
+<li><p><a href='#method-new'><code>Gargle2.0$new()</code></a></p></li>
+<li><p><a href='#method-format'><code>Gargle2.0$format()</code></a></p></li>
+<li><p><a href='#method-print'><code>Gargle2.0$print()</code></a></p></li>
+<li><p><a href='#method-hash'><code>Gargle2.0$hash()</code></a></p></li>
+<li><p><a href='#method-cache'><code>Gargle2.0$cache()</code></a></p></li>
+<li><p><a href='#method-load_from_cache'><code>Gargle2.0$load_from_cache()</code></a></p></li>
+<li><p><a href='#method-refresh'><code>Gargle2.0$refresh()</code></a></p></li>
+<li><p><a href='#method-init_credentials'><code>Gargle2.0$init_credentials()</code></a></p></li>
+<li><p><a href='#method-clone'><code>Gargle2.0$clone()</code></a></p></li>
+</ul>
+<p><details open ><summary>Inherited methods</summary>
+<ul>
+<li><p><span class="pkg-link" data-pkg="httr" data-topic="Token2.0" data-id="can_refresh"><a href='../../httr/html/Token2.0.html#method-can_refresh'><code>httr::Token2.0$can_refresh()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="httr" data-topic="Token2.0" data-id="revoke"><a href='../../httr/html/Token2.0.html#method-revoke'><code>httr::Token2.0$revoke()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="httr" data-topic="Token2.0" data-id="sign"><a href='../../httr/html/Token2.0.html#method-sign'><code>httr::Token2.0$sign()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="httr" data-topic="Token2.0" data-id="validate"><a href='../../httr/html/Token2.0.html#method-validate'><code>httr::Token2.0$validate()</code></a></span></p></li>
+</ul>
+</details>
+
+<hr>
+<a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
+<p>Create a Gargle2.0 token</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Gargle2.0</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  email <span class='op'>=</span> <span class='fu'><a href='gargle_options.html'>gargle_oauth_email</a></span><span class='op'>(</span><span class='op'>)</span>,
+  app <span class='op'>=</span> <span class='fu'><a href='gargle_app.html'>gargle_app</a></span><span class='op'>(</span><span class='op'>)</span>,
+  package <span class='op'>=</span> <span class='st'>"gargle"</span>,
+  credentials <span class='op'>=</span> <span class='cn'>NULL</span>,
+  params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  cache_path <span class='op'>=</span> <span class='fu'><a href='gargle_options.html'>gargle_oauth_cache</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span></pre><p></div></p>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>email</code></dt><dd><p>Optional email address. See <code><a href='gargle2.0_token.html'>gargle2.0_token()</a></code> for full details.</p></dd>
+
+<dt><code>app</code></dt><dd><p>An OAuth consumer application.</p></dd>
+
+<dt><code>package</code></dt><dd><p>Name of the package requesting a token. Used in messages.</p></dd>
+
+<dt><code>credentials</code></dt><dd><p>Exists largely for testing purposes.</p></dd>
+
+<dt><code>params</code></dt><dd><p>A list of parameters for <code><a href='https://httr.r-lib.org/reference/init_oauth2.0.html'>httr::init_oauth2.0()</a></code>. Some we
+actively use in gargle: <code>scope</code>, <code>use_oob</code>. Most we do not:
+<code>user_params</code>, <code>type</code>, <code>as_header</code>, <code>use_basic_auth</code>, <code>config_init</code>,
+<code>client_credentials</code>.</p></dd>
+
+<dt><code>cache_path</code></dt><dd><p>Specifies the OAuth token cache. Read more in
+<code><a href='gargle_options.html'>gargle_oauth_cache()</a></code>.</p></dd>
+
+</dl><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
+<p>A Gargle2.0 token.</p>
+<p><hr>
+<a id="method-format"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/format.html'>format()</a></code></h3>
+<p>Format a Gargle2.0 token</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Gargle2.0</span><span class='op'>$</span><span class='fu'>format</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>...</code></dt><dd><p>Not used.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-print"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code></h3>
+<p>Print a Gargle2.0 token</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Gargle2.0</span><span class='op'>$</span><span class='fu'>print</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>...</code></dt><dd><p>Not used.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-hash"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>hash()</code></h3>
+<p>Generate the email-augmented hash of a Gargle2.0 token</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Gargle2.0</span><span class='op'>$</span><span class='fu'>hash</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+
+<p><hr>
+<a id="method-cache"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>cache()</code></h3>
+<p>Put a Gargle2.0 token into the cache</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Gargle2.0</span><span class='op'>$</span><span class='fu'>cache</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+
+<p><hr>
+<a id="method-load_from_cache"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>load_from_cache()</code></h3>
+<p>(Attempt to) get a Gargle2.0 token from the cache</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Gargle2.0</span><span class='op'>$</span><span class='fu'>load_from_cache</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+
+<p><hr>
+<a id="method-refresh"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>refresh()</code></h3>
+<p>(Attempt to) refresh a Gargle2.0 token</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Gargle2.0</span><span class='op'>$</span><span class='fu'>refresh</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+
+<p><hr>
+<a id="method-init_credentials"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>init_credentials()</code></h3>
+<p>Initiate a new Gargle2.0 token</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Gargle2.0</span><span class='op'>$</span><span class='fu'>init_credentials</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+
+<p><hr>
+<a id="method-clone"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Gargle2.0</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
+
+</dl><p></div></p>
+
+
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#format">Format</a></li>
-          </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -182,13 +344,16 @@ default location for the token cache is also different: it's now
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

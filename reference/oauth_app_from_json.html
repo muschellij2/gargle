@@ -8,21 +8,29 @@
 
 <title>Create an OAuth app from JSON — oauth_app_from_json • gargle</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,12 +38,12 @@
 
 
 
-<meta property="og:title" content="Create an OAuth app from JSON — oauth_app_from_json" />
 
+<meta property="og:title" content="Create an OAuth app from JSON — oauth_app_from_json" />
 <meta property="og:description" content="Essentially a wrapper around httr::oauth_app() that extracts the necessary
 info from JSON obtained from Google Cloud Platform Console. If no appname is given,
 the &quot;project_id&quot; from the JSON is used." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -59,9 +67,10 @@ the &quot;project_id&quot; from the JSON is used." />
   gtag('config', 'UA-115082821-1');
 </script>
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -75,7 +84,7 @@ the &quot;project_id&quot; from the JSON is used." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gargle</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0.9000</span>
       </span>
     </div>
 
@@ -92,34 +101,48 @@ the &quot;project_id&quot; from the JSON is used." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/articles/managing-tokens-securely.html">Managing tokens securely</a>
+      <a href="../articles/non-interactive-auth.html">Non-interactive auth</a>
     </li>
     <li>
-      <a href="../articles/gargle-auth-in-client-package.html">How to use gargle for auth in a client package</a>
+      <a href="../articles/troubleshooting.html">Troubleshooting gargle auth</a>
+    </li>
+    <li>
+      <a href="../articles/auth-from-web.html">Auth when using R in the browser</a>
     </li>
     <li>
       <a href="../articles/get-api-credentials.html">How to get your own API credentials</a>
     </li>
+    <li class="divider"></li>
     <li>
-      <a href="../articles/how-gargle-gets-tokens.html">How gargle gets tokens</a>
-    </li>
-    <li>
-      <a href="../articles/non-interactive-auth.html">Non-interactive auth</a>
-    </li>
-    <li>
-      <a href="../articles/request-helper-functions.html">Request helper functions</a>
+      <a href="../articles/index.html">More...</a>
     </li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">News</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Blog posts</li>
+    <li>
+      <a href="https://www.tidyverse.org/blog/2021/07/gargle-1-2-0/">gargle 1.2.0</a>
+    </li>
+    <li>
+      <a href="https://www.tidyverse.org/blog/2019/08/gargle-hello-world/">gargle's debut on CRAN</a>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <a href="../news/index.html">Change log</a>
+    </li>
+  </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/gargle">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/r-lib/gargle/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -130,6 +153,7 @@ the &quot;project_id&quot; from the JSON is used." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -141,15 +165,13 @@ the &quot;project_id&quot; from the JSON is used." />
     </div>
 
     <div class="ref-description">
-    
-    <p>Essentially a wrapper around <code><a href='https://www.rdocumentation.org/packages/httr/topics/oauth_app'>httr::oauth_app()</a></code> that extracts the necessary
+    <p>Essentially a wrapper around <code><a href='https://httr.r-lib.org/reference/oauth_app.html'>httr::oauth_app()</a></code> that extracts the necessary
 info from JSON obtained from <a href='https://console.cloud.google.com'>Google Cloud Platform Console</a>. If no <code>appname</code> is given,
 the <code>"project_id"</code> from the JSON is used.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>oauth_app_from_json</span>(<span class='no'>path</span>, <span class='kw'>appname</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>oauth_app_from_json</span><span class='op'>(</span><span class='va'>path</span>, appname <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -157,7 +179,7 @@ the <code>"project_id"</code> from the JSON is used.</p>
       <th>path</th>
       <td><p>JSON downloaded from Google Cloud Platform Console, containing a
 client id (aka key) and secret, in one of the forms supported for the <code>txt</code>
-argument of <code><a href='https://www.rdocumentation.org/packages/jsonlite/topics/fromJSON'>jsonlite::fromJSON()</a></code> (typically, a file path or JSON string).</p></td>
+argument of <code><a href='https://rdrr.io/pkg/jsonlite/man/fromJSON.html'>jsonlite::fromJSON()</a></code> (typically, a file path or JSON string).</p></td>
     </tr>
     <tr>
       <th>appname</th>
@@ -165,25 +187,23 @@ argument of <code><a href='https://www.rdocumentation.org/packages/jsonlite/topi
 used to make it easier to identify different applications.</p></td>
     </tr>
     </table>
-    
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>oauth_app</span>(
-  <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/path/to/the/JSON/you/downloaded/from/gcp/console.json"</span>
-)
-<span class='co'># }</span></pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'>oauth_app</span><span class='op'>(</span>
+  path <span class='op'>=</span> <span class='st'>"/path/to/the/JSON/you/downloaded/from/gcp/console.json"</span>
+<span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-            
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -191,13 +211,16 @@ used to make it easier to identify different applications.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

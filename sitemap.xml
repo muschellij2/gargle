@@ -13,6 +13,12 @@
     <loc>https://gargle.r-lib.org/reference/GceToken.html</loc>
   </url>
   <url>
+    <loc>https://gargle.r-lib.org/reference/WifToken.html</loc>
+  </url>
+  <url>
+    <loc>https://gargle.r-lib.org/reference/bulletize.html</loc>
+  </url>
+  <url>
     <loc>https://gargle.r-lib.org/reference/cred_funs.html</loc>
   </url>
   <url>
@@ -22,6 +28,9 @@
     <loc>https://gargle.r-lib.org/reference/credentials_byo_oauth2.html</loc>
   </url>
   <url>
+    <loc>https://gargle.r-lib.org/reference/credentials_external_account.html</loc>
+  </url>
+  <url>
     <loc>https://gargle.r-lib.org/reference/credentials_gce.html</loc>
   </url>
   <url>
@@ -29,6 +38,9 @@
   </url>
   <url>
     <loc>https://gargle.r-lib.org/reference/credentials_user_oauth2.html</loc>
+  </url>
+  <url>
+    <loc>https://gargle.r-lib.org/reference/field_mask.html</loc>
   </url>
   <url>
     <loc>https://gargle.r-lib.org/reference/gargle-package.html</loc>
@@ -41,6 +53,9 @@
   </url>
   <url>
     <loc>https://gargle.r-lib.org/reference/gargle_app.html</loc>
+  </url>
+  <url>
+    <loc>https://gargle.r-lib.org/reference/gargle_map_cli.html</loc>
   </url>
   <url>
     <loc>https://gargle.r-lib.org/reference/gargle_oauth_sitrep.html</loc>
@@ -58,10 +73,16 @@
     <loc>https://gargle.r-lib.org/reference/oauth_app_from_json.html</loc>
   </url>
   <url>
+    <loc>https://gargle.r-lib.org/reference/oauth_external_token.html</loc>
+  </url>
+  <url>
     <loc>https://gargle.r-lib.org/reference/request_develop.html</loc>
   </url>
   <url>
     <loc>https://gargle.r-lib.org/reference/request_make.html</loc>
+  </url>
+  <url>
+    <loc>https://gargle.r-lib.org/reference/request_retry.html</loc>
   </url>
   <url>
     <loc>https://gargle.r-lib.org/reference/response_process.html</loc>
@@ -74,6 +95,9 @@
   </url>
   <url>
     <loc>https://gargle.r-lib.org/articles/articles/managing-tokens-securely.html</loc>
+  </url>
+  <url>
+    <loc>https://gargle.r-lib.org/articles/auth-from-web.html</loc>
   </url>
   <url>
     <loc>https://gargle.r-lib.org/articles/gargle-auth-in-client-package.html</loc>
@@ -89,5 +113,8 @@
   </url>
   <url>
     <loc>https://gargle.r-lib.org/articles/request-helper-functions.html</loc>
+  </url>
+  <url>
+    <loc>https://gargle.r-lib.org/articles/troubleshooting.html</loc>
   </url>
 </urlset>
